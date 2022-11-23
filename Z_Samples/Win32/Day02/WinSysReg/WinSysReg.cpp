@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <stdio.h>
 
 HANDLE g_hOutput = 0; // 接受标准输出句柄
 
@@ -12,7 +13,8 @@ void OnSize(HWND hWnd, LPARAM lParam) {
 	short nWidth = LOWORD(lParam);
 	short nHight = LOWORD(lParam);
 	char szText[256] = { 0 };
-
+	sprintf_s(szText, "宽%d 高%d\n", nWidth, nHight);
+	WriteConsole(g_hOutput,szText,strlen(szText),NULL,NULL );
 
 }
 
@@ -177,4 +179,8 @@ int CALLBACK WinMain(HINSTANCE hIns, HINSTANCE hPreIns, LPSTR IpCmdLine, int nCm
 	// 消息循环
 	MSG nMsg = {};
 	while (GetMessage(&nMsg, NULL, 0, 0)) {
-		TranslateMessa
+		TranslateMessage(&nMsg); // 翻译消息
+		DispatchMessage(&nMsg); // 派发消息(谁处理消息 就派发给谁 -> 窗口处理函数)
+	}
+	return 0;
+}
