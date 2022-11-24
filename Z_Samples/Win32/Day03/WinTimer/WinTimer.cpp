@@ -1,49 +1,50 @@
 #include <windows.h>
+#include <stdio.h>
 
-HANDLE g_hOutput;
+HANDLE g_hOutput; // 句柄 控制台输出用
 
-
-void OnPaint(HWND hWnd) {
-	const char* pszText = "Paint\n";
+void OnTimer(HWND hWnd, WPARAM wParam) {
+	char pszText[256] = { 0 };
+	sprintf_s(pszText,"当前定时器DI为:%d\n",wParam);
 	WriteConsole(g_hOutput, pszText, strlen(pszText), NULL, NULL);
 
-
-
-	PAINTSTRUCT ps = { 0 };
-	HDC hdc = BeginPaint(hWnd, &ps);
-	TextOut(hdc, 100, 100, "hello", 5);
-	EndPaint(hWnd, &ps);
-	// 绘图代码, 需要放在处理WM_PAINT消息时调用
-
+	switch (wParam) {
+	case 1:
+		// ID为1的定时器
+		break;
+	case 2:
+		// ID为2的定时器
+		break;
+	}
 }
 
 // 窗口处理函数(自定义 处理消息)
-LRESULT CALLBACK WndProd(HWND hWnd, UINT msgID, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK WndProd(HWND hWnd, UINT msgID, WPARAM wParam, LPARAM IParam) {
 	switch (msgID) {
 
-	case WM_PAINT:
-		OnPaint(hWnd);
+	case WM_CREATE:
+		SetTimer(hWnd, 1, 1000, NULL);
+		SetTimer(hWnd, 2, 2000, NULL);
 		break;
 
-	case WM_NCLBUTTONDOWN:
-		InvalidateRect(hWnd, NULL, TRUE);
+	case WM_TIMER:
+		OnTimer(hWnd, wParam);
 		break;
+
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
 	}
 
-
-
-	return DefWindowProc(hWnd, msgID, wParam, lParam);
+	return DefWindowProc(hWnd, msgID, wParam, IParam);
 }
 
 // 入口函数
 int CALLBACK WinMain(HINSTANCE hIns, HINSTANCE hPreIns, LPSTR IpCmdLine, int nCmdShow) {
 
+	// 允许显示控制台
 	AllocConsole();
 	g_hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
-
 
 	// 注册窗口类
 	WNDCLASS wc = { 0 };
