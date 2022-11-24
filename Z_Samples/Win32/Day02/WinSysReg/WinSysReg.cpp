@@ -3,10 +3,23 @@
 
 HANDLE g_hOutput = 0; // 接受标准输出句柄
 
+#define WM_MYMESSAGE WM_USER+10 // (小于31743的值)
+
 void OnCreate(HWND hWnd, LPARAM lParam) {
 	CREATESTRUCT* pcs = (CREATESTRUCT*)lParam;
 	char* pszText = (char*)pcs->lpszName; // window
 	MessageBox(hWnd, "窗口", pszText, MB_YESNO);
+
+
+	// 自定义消息
+	PostMessage(hWnd, WM_MYMESSAGE, 1, 2);
+}
+
+void OnMyMes(HWND hWnd, WPARAM wParam, LPARAM lParam) {
+	char szText[256] = { 0 };
+	sprintf_s(szText, "%d,%d", wParam, lParam);
+	WriteConsole(g_hOutput, szText, strlen(szText), NULL, NULL);
+	MessageBox(hWnd,  szText, "自定义消息窗口", MB_YESNO);
 }
 
 void OnSize(HWND hWnd, LPARAM lParam) {
@@ -14,8 +27,7 @@ void OnSize(HWND hWnd, LPARAM lParam) {
 	short nHight = LOWORD(lParam);
 	char szText[256] = { 0 };
 	sprintf_s(szText, "宽%d 高%d\n", nWidth, nHight);
-	WriteConsole(g_hOutput,szText,strlen(szText),NULL,NULL );
-
+	WriteConsole(g_hOutput, szText, strlen(szText), NULL, NULL);
 }
 
 LRESULT CALLBACK WndProd(HWND hWnd, UINT msgID, WPARAM wParam, LPARAM lParam) {
@@ -29,7 +41,10 @@ LRESULT CALLBACK WndProd(HWND hWnd, UINT msgID, WPARAM wParam, LPARAM lParam) {
 
 	case WM_CREATE:
 		OnCreate(hWnd, lParam);
+		break;
 
+	case WM_MYMESSAGE:
+		OnMyMes(hWnd, wParam, lParam);
 		break;
 
 	case WM_SYSCOMMAND:
@@ -178,9 +193,20 @@ int CALLBACK WinMain(HINSTANCE hIns, HINSTANCE hPreIns, LPSTR IpCmdLine, int nCm
 
 	// 消息循环
 	MSG nMsg = {};
-	while (GetMessage(&nMsg, NULL, 0, 0)) {
-		TranslateMessage(&nMsg); // 翻译消息
-		DispatchMessage(&nMsg); // 派发消息(谁处理消息 就派发给谁 -> 窗口处理函数)
+	while (1) {
+		if (PeekMessage(&nMsg, NULL, 0, 0, PM_NOREMOVE)) {
+			if (GetMessage(&nMsg, NULL, 0, 0)) {
+				TranslateMessage(&nMsg);
+				DispatchMessage(&nMsg);
+			}
+			else {
+				return 0; // 退出程序
+			}
+		}
+		else {
+			// 没消息 空闲处理
+			WriteConsole(g_hOutput, "Onldle", strlen("Onldle"), NULL, NULL);
+		}
 	}
 	return 0;
 }
