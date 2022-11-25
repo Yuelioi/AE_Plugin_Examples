@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinMouse", "WinMouse\WinMou
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinTimer", "WinTimer\WinTimer.vcxproj", "{09936334-2754-49DE-ADA5-46134AAC55A9}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinMenu", "WinMenu\WinMenu.vcxproj", "{37812FC3-FFE1-43CE-B00B-341EA240180B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,14 @@ Global
 		{09936334-2754-49DE-ADA5-46134AAC55A9}.Release|x64.Build.0 = Release|x64
 		{09936334-2754-49DE-ADA5-46134AAC55A9}.Release|x86.ActiveCfg = Release|Win32
 		{09936334-2754-49DE-ADA5-46134AAC55A9}.Release|x86.Build.0 = Release|Win32
+		{37812FC3-FFE1-43CE-B00B-341EA240180B}.Debug|x64.ActiveCfg = Debug|x64
+		{37812FC3-FFE1-43CE-B00B-341EA240180B}.Debug|x64.Build.0 = Debug|x64
+		{37812FC3-FFE1-43CE-B00B-341EA240180B}.Debug|x86.ActiveCfg = Debug|Win32
+		{37812FC3-FFE1-43CE-B00B-341EA240180B}.Debug|x86.Build.0 = Debug|Win32
+		{37812FC3-FFE1-43CE-B00B-341EA240180B}.Release|x64.ActiveCfg = Release|x64
+		{37812FC3-FFE1-43CE-B00B-341EA240180B}.Release|x64.Build.0 = Release|x64
+		{37812FC3-FFE1-43CE-B00B-341EA240180B}.Release|x86.ActiveCfg = Release|Win32
+		{37812FC3-FFE1-43CE-B00B-341EA240180B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
