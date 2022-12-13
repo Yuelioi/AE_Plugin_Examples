@@ -42,7 +42,6 @@
 */
 
 #include "Skeleton.h"
-#include <windows.h>
 
 static PF_Err 
 About (	
@@ -76,8 +75,6 @@ GlobalSetup (
 										BUILD_VERSION);
 
 	out_data->out_flags =  PF_OutFlag_DEEP_COLOR_AWARE;	// just 16bpc, not 32bpc
-
-	
 	
 	return PF_Err_NONE;
 }
@@ -248,10 +245,8 @@ EffectMain(
 	void			*extra)
 {
 	PF_Err		err = PF_Err_NONE;
-
 	
-	
-	/*try {
+	try {
 		switch (cmd) {
 			case PF_Cmd_ABOUT:
 
@@ -288,7 +283,7 @@ EffectMain(
 	}
 	catch(PF_Err &thrown_err){
 		err = thrown_err;
-	}*/
+	}
 	return err;
 }
 

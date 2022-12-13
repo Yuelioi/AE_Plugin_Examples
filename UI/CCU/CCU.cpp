@@ -111,7 +111,7 @@ ParamsSetup (
 					CCU_RADIUS_DFLT, 
 					SLIDER_PRECISION, 
 					DISPLAY_FLAGS,
-					1,
+					0,
 					Y_SLIDER_DISK_ID);
 
 	AEFX_CLR_STRUCT(def);
@@ -192,12 +192,12 @@ Render (
 						downsample_x_invF =	static_cast<float>(in_data->downsample_x.den) / in_data->downsample_x.num,
 						downsample_y_invF =	static_cast<float>(in_data->downsample_y.den) / in_data->downsample_y.num;
 
-	// 如果宽度或高度为0，只需将整个帧从输入复制到输出
+	// If either width or height is 0, just copy the entire frame from input to output
 	
 	if (rad_xF == 0 || rad_yF == 0) {
 
-		// Premiere Pro/Elements 不支持 WorldTransformSuite1,
-		// 但它支持utils中的许多回调
+		// Premiere Pro/Elements doesn't support WorldTransformSuite1,
+		// but it does support many of the callbacks in utils
 
 		if (in_data->appl_id != 'PrMr') {
 			if (PF_Quality_HI == in_data->quality){
@@ -222,7 +222,7 @@ Render (
 
 	} else {
 
-		// 否则，逐行循环遍历
+		// Otherwise, loop through, row by row
 
 		for (A_long yL = 0; yL < outputP->height ; yL++) {
 

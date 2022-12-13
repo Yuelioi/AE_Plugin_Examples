@@ -102,9 +102,9 @@ LRESULT PanelatorUI_Plat::OSWindowWndProc(	HWND	hWnd,
 			GetClientRect(hWnd, &origClientArea);
 
 			#ifdef AE_OS_WIN
-				sprintf_s(textToDraw, "窗口大小: %d, %d", origClientArea.right - origClientArea.left, origClientArea.bottom - origClientArea.top);
+				sprintf_s(textToDraw, "Size: %d, %d", origClientArea.right - origClientArea.left, origClientArea.bottom - origClientArea.top);
 			#else
-				sprintf(textToDraw, "窗口大小: %d, %d", origClientArea.right - origClientArea.left, origClientArea.bottom - origClientArea.top);
+				sprintf(textToDraw, "Size: %d, %d", origClientArea.right - origClientArea.left, origClientArea.bottom - origClientArea.top);
 			#endif
 			clientArea.top = clientArea.bottom;
 			clientArea.bottom = clientArea.top + 30;
@@ -112,9 +112,9 @@ LRESULT PanelatorUI_Plat::OSWindowWndProc(	HWND	hWnd,
 			DrawText(hdc, textToDraw, (uint32_t) strlen(textToDraw), &clientArea, DT_SINGLELINE | DT_LEFT );
 			
 #ifdef AE_OS_WIN
-			sprintf_s(textToDraw, "点击次数: %d", i_numClicks);
+			sprintf_s(textToDraw, "NumClicks: %d", i_numClicks);
 #else
-			sprintf(textToDraw, "点击次数: %d", i_numClicks);
+			sprintf(textToDraw, "NumClicks: %d", i_numClicks);
 #endif
 			clientArea.top = clientArea.bottom;
 			clientArea.bottom = clientArea.top + 30;

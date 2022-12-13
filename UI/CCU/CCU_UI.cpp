@@ -23,7 +23,7 @@
 #include <adobesdk/DrawbotSuite.h>
 #include "AEFX_SuiteHelper.h"
 
-// 计算以 oval_frame 为界的椭圆的点 
+// Calculates the points for an oval bounded by oval_frame 
 static void
 CalculateOval (
 	PF_InData			*in_data,
@@ -35,7 +35,7 @@ CalculateOval (
 						oval_width = (oval_frame->right - oval_frame->left) / 2,
 						oval_height = (oval_frame->bottom - oval_frame->top) / 2;
 
-	// 计算椭圆形的中心点
+	// Calculate center point for oval
 	DRAWBOT_PointF32	center_point;
 	center_point.x = oval_frame->left + oval_width;
 	center_point.y = oval_frame->top + oval_height;
@@ -44,7 +44,7 @@ CalculateOval (
 	for (A_short iS = 0; iS < OVAL_PTS; ++iS) {
 		radF		= (2.0 * PF_PI * iS) / OVAL_PTS;
 
-		// Premiere Pro/Elements 不支持 ANSICallbacksSuite1
+		// Premiere Pro/Elements doesn't support ANSICallbacksSuite1
 		if (in_data->appl_id != 'PrMr') {
 			poly_oval[iS].x = suites.ANSICallbacksSuite1()->sin(radF);
 			poly_oval[iS].y = suites.ANSICallbacksSuite1()->cos(radF);
@@ -53,13 +53,13 @@ CalculateOval (
 			poly_oval[iS].y = cos(radF);
 		}
 
-		// 将单位圆上的点转换为椭圆上的相应点
+		// Transform the point on a unit circle to the corresponding point on the oval
 		poly_oval[iS].x = poly_oval[iS].x * oval_width + center_point.x;
 		poly_oval[iS].y = poly_oval[iS].y * oval_height + center_point.y;
 	}
 }
 
-// 绘制椭圆
+// Draws an oval
 static PF_Err
 DrawOval(
 	PF_InData		*in_data,
@@ -85,7 +85,7 @@ DrawOval(
 
 	ERR(drawbot_suitesP->path_suiteP->LineTo(pathP, poly_oval[0].x, poly_oval[0].y));
 
-	// 目前 EffectCustomUIOverlayThemeSuite 不支持 Premiere Pro/Elements
+	// Currently, EffectCustomUIOverlayThemeSuite is unsupported in Premiere Pro/Elements
 	if (in_data->appl_id != 'PrMr')
 	{
 		ERR(suites.EffectCustomUIOverlayThemeSuite1()->PF_StrokePath(drawing_ref, pathP, FALSE));
@@ -107,7 +107,7 @@ DrawOval(
 	return err;
 }
 
-// 根据传入的参数以固定坐标计算帧
+// Calculates the frame in fixed coordinates based on the params passed in
 void 
 FixedFrameFromParams (
 	PF_InData		*in_data,
@@ -311,7 +311,7 @@ DrawHandles (
 	{
 		ERR(suites.DrawbotSuiteCurrent()->GetSurface(drawing_ref, &surface_ref));
 
-		// 目前 EffectCustomUIOverlayThemeSuite 不支持 Premiere Pro/Elements
+		// Currently, EffectCustomUIOverlayThemeSuite is unsupported in Premiere Pro/Elements
 		if (in_data->appl_id != 'PrMr')
 		{
 			ERR(suites.EffectCustomUIOverlayThemeSuite1()->PF_GetPreferredForegroundColor(&foreground_color));
@@ -402,7 +402,7 @@ DoClickHandles (
 	mouse_downPt 		= *(reinterpret_cast<PF_Point*>(&event_extraP->u.do_click.screen_point));
 
 	for (A_short iS = 0; iS < 4; ++iS) {
-		// 将 cornersPtA 转换为合成 frameRP
+		// Convert cornersPtA to comp frameRP
 		
 		(*frame_func)(	in_data, 
 						event_extraP, 
@@ -410,7 +410,7 @@ DoClickHandles (
 						&cornersPtA[iS], 
 						&mouse_layerFiPt);
 
-		// PR不支持 ANSICallbacksSuite
+		// Premiere doesn't support the ANSICallbacksSuite
 		if (in_data->appl_id != 'PrMr') {
 			slopL	= 		(long)suites.ANSICallbacksSuite1()->fabs(cornersPtA[iS].h	- mouse_downPt.h);
 			slopL	+=	 	(long)suites.ANSICallbacksSuite1()->fabs(cornersPtA[iS].v	- mouse_downPt.v);
@@ -475,7 +475,7 @@ DoDragHandles(
 	centerFiPt.x = params[CCU_PT]->u.td.x_value;
 	centerFiPt.y = params[CCU_PT]->u.td.y_value;
 
-	// 计算新的半径
+	// Calculate new radius
 	new_xF = FIX_2_FLOAT(centerFiPt.x - mouse_layerFiPt.x) * parF;	
 	if (in_data->appl_id != 'PrMr') {
 		params[CCU_X_RADIUS]->u.fd.value 		= (A_long)suites.ANSICallbacksSuite1()->fabs(FLOAT2FIX(new_xF));
